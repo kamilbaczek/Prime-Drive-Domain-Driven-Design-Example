@@ -1,11 +1,14 @@
 ﻿using PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
+using PrimeDrive.Realizations.Domain.Locations;
 
 namespace PrimeDrive.Realizations.Domain;
 
+using Prices;
+
 public sealed class Realization : Entity, IAggregateRoot
 {
-    public Guid Id { get; private set; }
-    public Guid ServiceId { get; private set; }
+    public RealizationId Id { get; private set; }
+    public ServiceRequestId ServiceId { get; private set; }
     public Location PickupPoint { get; private set; }
     public Location DestinationPoint { get; private set; }
     private DriverId DriverId { get; set; }
@@ -14,7 +17,6 @@ public sealed class Realization : Entity, IAggregateRoot
 
     private Realization()
     {
-
     }
 
     public static Realization Begin => new Realization();

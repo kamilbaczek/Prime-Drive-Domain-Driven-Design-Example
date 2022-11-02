@@ -1,16 +1,19 @@
-using PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
-
 namespace PrimeDrive.Realizations.Domain.Prices;
 
-public sealed class Price :ValueObject
+using DomainDrivenDesign.BuildingBlocks.Blocks;
+using Exceptions;
+
+public sealed class Price : ValueObject
 {
+    private const int Zero = 0;
     public string Currency { get; }
     public decimal Value { get; }
 
     public Price(string currency, decimal value)
     {
-        if (Value < 0)
+        if (Value < Zero)
         {
+            throw new PriceCannotBeNegativeException();
         }
 
         Currency = currency;

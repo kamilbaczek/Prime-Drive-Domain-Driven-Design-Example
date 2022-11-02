@@ -1,3 +1,3 @@
 namespace PrimeDrive.Realizations.Domain;
 
-internal record struct DriverId(Guid Value);
+public record struct DriverId(Guid Value);
