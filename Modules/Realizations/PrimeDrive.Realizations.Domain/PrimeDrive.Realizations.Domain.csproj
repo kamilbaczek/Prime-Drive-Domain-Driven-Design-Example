@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\PrimeDrive.DomainDrivenDesign.BuildingBlocks\PrimeDrive.DomainDrivenDesign.BuildingBlocks.csproj" />
+        <ProjectReference Include="..\..\..\PrimeDrive.DomainDrivenDesign.BuildingBlocks\PrimeDrive.DomainDrivenDesign.BuildingBlocks.csproj"/>
     </ItemGroup>
 
-    
+
 </Project>

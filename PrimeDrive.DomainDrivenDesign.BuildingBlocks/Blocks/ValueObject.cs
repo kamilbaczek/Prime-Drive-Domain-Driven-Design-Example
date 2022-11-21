@@ -66,14 +66,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
             return hash;
         }
     }
-
-    protected static void CheckRule(IBusinessRule rule)
-    {
-        if (rule.IsBroken())
-        {
-            throw new BusinessRuleValidationException(rule);
-        }
-    }
+    
 
     private bool PropertiesAreEqual(object obj, PropertyInfo p)
     {
@@ -91,7 +84,6 @@ public abstract class ValueObject : IEquatable<ValueObject>
         {
             _properties = GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
                 .ToList();
         }
 
@@ -103,7 +95,6 @@ public abstract class ValueObject : IEquatable<ValueObject>
         if (_fields == null)
         {
             _fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(p => p.GetCustomAttribute(typeof(IgnoreMemberAttribute)) == null)
                 .ToList();
         }
 

@@ -5,32 +5,47 @@ using PrimeDrive.Realizations.Domain.Rides;
 namespace PrimeDrive.Realizations.Domain;
 
 using Prices;
+using Rides.Extensions;
 
 public sealed class Realization : Entity, IAggregateRoot
 {
     public RealizationId Id { get; private set; }
     public ServiceRequestId ServiceId { get; private set; }
 
-    // TODO extend Price Value object to have
-    public Price Price {get;}
+    // TODO extend Money Value object to have
+    public Money Price => CalculateRidesPrice();
+    private Money CalculateRidesPrice()
+    {
+        var finalPrice = Money.Zero(Currency.Usd);
+        for (var rideNumber = 1; rideNumber <= Rides.Count; rideNumber++)
+        {
+            if (rideNumber > 1)
+            {
+                finalPrice = Rides[rideNumber].Price / 2;
+                continue;
+            }
+
+            finalPrice = Rides[rideNumber].Price;
+        }
+
+        return finalPrice;
+    }
 
     private DriverId DriverId { get; set; }
-    public IList<Ride> Rides { get; private set; }
+    private IList<Ride> Rides { get; set; }
 
     private Realization(Location pickupPoint, Location destinationPoint)
     {
         Rides = new List<Ride>();
-        var intialRide = Ride.Begin(pickupPoint, destinationPoint);
-        Rides.Add(intialRide);
+        var initialRide = Ride.Begin(pickupPoint, destinationPoint);
+        Rides.Add(initialRide);
     }
 
-    public static Realization Begin(Location pickupPoint, Location destinationPoint) => new (pickupPoint, destinationPoint);
+    public static Realization Begin(Location pickupPoint, Location destinationPoint) => new(pickupPoint, destinationPoint);
 
     public void AddStopPoint(Location location, RideId rideId)
     {
-        //TODO update event storming map to handle case when "More than one ride then 50% discount for second one"
-        //TODO create extension method from IList<Ride> Get(rideId)
-        var currentRide = Rides.Single(ride => ride.Id == rideId);
+        var currentRide = Rides.Get(rideId);
         currentRide.AddStop(location);
         // Add Domain event
     }
@@ -44,4 +59,3 @@ public sealed class Realization : Entity, IAggregateRoot
     {
     }
 }
-

@@ -7,6 +7,8 @@ namespace PrimeDrive.Realizations.Domain.Rides;
 
 public sealed class Ride : Entity
 {
+    private const int RideCost = 10;
+
     private Ride(Location pickupPoint, Location destinationPoint)
     {
         Id = RideId.Create();
@@ -15,6 +17,7 @@ public sealed class Ride : Entity
         var destinationStop = Stop.Create(destinationPoint);
         Stops.AddFirst(pickupStop);
         Stops.AddLast(destinationStop);
+        Price = Money.From(Currency.Usd, RideCost);
     }
 
     internal static Ride Begin(Location pickupPoint, Location destinationPoint) => new(pickupPoint, destinationPoint);
@@ -26,9 +29,6 @@ public sealed class Ride : Entity
     }
 
     private LinkedList<Stop> Stops { get; }
-
-    internal RideId Id {get; private set; }
-    internal Price Price { get; private set; }
-    private Stop PickupPoint => Stops.First();
-    private Stop DestinationPoint => Stops.Last();
+    internal RideId Id { get; private set; }
+    internal Money Price { get; private set; }
 }

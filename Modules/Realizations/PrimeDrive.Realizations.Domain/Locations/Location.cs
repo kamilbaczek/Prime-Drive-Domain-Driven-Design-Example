@@ -17,6 +17,7 @@ public sealed class Location : ValueObject
             {
                 throw new LatitudeIsOutOfRangeException();
             }
+
             _latitude = value;
         }
     }
@@ -30,6 +31,7 @@ public sealed class Location : ValueObject
             {
                 throw new LongitudeIsOutOfRangeException();
             }
+
             _longitude = value;
         }
     }
