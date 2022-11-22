@@ -6,6 +6,7 @@ using Exceptions;
 public sealed class Money : ValueObject
 {
     private const int ZeroValue = 0;
+    private const decimal HalfPriceDiscount = 0.5m;
 
     private string Currency { get; }
     private decimal Value { get; }
@@ -28,4 +29,8 @@ public sealed class Money : ValueObject
     internal static Money Zero(string currency) => new(currency, ZeroValue);
 
     internal static Money From(string currency, decimal value) => new(currency, value);
+    
+    internal Money WithHalfDiscount() => WithPercentageDiscount(HalfPriceDiscount);
+
+    private Money WithPercentageDiscount(decimal discount) => new(Currency, Value * discount);
 }
