@@ -1,15 +1,7 @@
-﻿namespace PrimeDrive.DomainDrivenDesign.BuildingBlocks;
+﻿namespace PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
 
-using Blocks;
-
-public abstract class DomainEventBase : IDomainEvent
+public abstract record DomainEventBase : IDomainEvent
 {
-    protected DomainEventBase()
-    {
-        Id = Guid.NewGuid();
-        OccurredOn = DateTime.UtcNow;
-    }
-
     public Guid Id { get; }
 
     public DateTime OccurredOn { get; }

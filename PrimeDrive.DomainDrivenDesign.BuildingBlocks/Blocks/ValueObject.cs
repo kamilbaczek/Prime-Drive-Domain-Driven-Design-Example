@@ -43,7 +43,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
         }
 
         return GetProperties().All(p => PropertiesAreEqual(obj, p))
-            && GetFields().All(f => FieldsAreEqual(obj, f));
+               && GetFields().All(f => FieldsAreEqual(obj, f));
     }
 
     public override int GetHashCode()
@@ -66,7 +66,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
             return hash;
         }
     }
-    
+
 
     private bool PropertiesAreEqual(object obj, PropertyInfo p)
     {

@@ -1,9 +1,11 @@
 namespace PrimeDrive.Realizations.Domain.Events;
 
 using DomainDrivenDesign.BuildingBlocks.Blocks;
+using Locations;
+using Rides;
 
-public record RealizationBegunEvent: IDomainEvent
-{
-    public Guid Id { get; }
-    public DateTime OccurredOn { get; }
-}
+public record RealizationBegunEvent(
+    RealizationId RealizationId,
+    RideId RideId,
+    Location PickupPoint,
+    Location DestinationPoint) : DomainEventBase;

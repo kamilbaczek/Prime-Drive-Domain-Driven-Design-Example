@@ -1,20 +1,36 @@
-﻿using PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
-using PrimeDrive.Realizations.Domain.Locations;
-using PrimeDrive.Realizations.Domain.Rides;
+﻿namespace PrimeDrive.Realizations.Domain;
 
-namespace PrimeDrive.Realizations.Domain;
-
+using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Events;
+using Locations;
 using Prices;
+using Rides;
+using Rides.Events;
 using Rides.Extensions;
 
 public sealed class Realization : Entity, IAggregateRoot
 {
+    private string State = "";
+
+    private Realization(
+        Location pickupPoint,
+        Location destinationPoint)
+    {
+        Rides = ImmutableList<Ride>.Empty;
+
+        var initialRide = Ride.Begin(pickupPoint, destinationPoint);
+        Rides.Add(initialRide);
+
+        var @event = new RealizationBegunEvent(Id, initialRide.Id, pickupPoint, destinationPoint);
+        AddDomainEvent(@event);
+    }
     public RealizationId Id { get; private set; }
     public ServiceRequestId ServiceId { get; private set; }
 
-    // TODO extend Money Value object to have
     public Money Price => CalculateRidesPrice();
+
+    private DriverId DriverId { get; set; }
+    private IList<Ride> Rides { get; }
     private Money CalculateRidesPrice()
     {
         var finalPrice = Money.Zero(Currency.Usd);
@@ -23,8 +39,8 @@ public sealed class Realization : Entity, IAggregateRoot
             if (rideNumber > 1)
             {
                 finalPrice += Rides[rideNumber]
-                                            .Price
-                                            .WithHalfDiscount();
+                    .Price
+                    .WithHalfDiscount();
                 continue;
             }
 
@@ -34,39 +50,30 @@ public sealed class Realization : Entity, IAggregateRoot
         return finalPrice;
     }
 
-    private DriverId DriverId { get; set; }
-    private IList<Ride> Rides { get; set; }
-
-    private Realization(
-        Location pickupPoint, 
-        Location destinationPoint)
-    {
-        Rides = new List<Ride>();
-        var initialRide = Ride.Begin(pickupPoint, destinationPoint);
-        Rides.Add(initialRide);
-        var @event = new RealizationBegunEvent();
-        AddDomainEvent(@event);
-    }
-
     public static Realization Begin(
-        Location pickupPoint, 
-        Location destinationPoint) => 
+        Location pickupPoint,
+        Location destinationPoint) =>
         new(pickupPoint, destinationPoint);
 
-    public void AddStopPoint(Location location, RideId rideId)
+    public void AddStopPoint(RideId rideId, Location location)
     {
         var currentRide = Rides.Get(rideId);
+
         currentRide.AddStop(location);
-        var @event = new StopPointAddedEvent();
+
+        var @event = new StopPointAddedEvent(rideId, location);
         AddDomainEvent(@event);
     }
 
     public void Cancel()
     {
-        //TODO Create valueobject named status with Ride sta
+        var @event = new RealizationCancelledEvent(Id);
+        AddDomainEvent(@event);
     }
 
     public void Complete()
     {
+        var @event = new RealizationFinishedEvent(Id, Price);
+        AddDomainEvent(@event);
     }
 }

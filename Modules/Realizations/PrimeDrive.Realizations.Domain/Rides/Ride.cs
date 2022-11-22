@@ -1,9 +1,9 @@
-using PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
-using PrimeDrive.Realizations.Domain.Locations;
-using PrimeDrive.Realizations.Domain.Prices;
-using PrimeDrive.Realizations.Domain.Rides.Stops;
-
 namespace PrimeDrive.Realizations.Domain.Rides;
+
+using DomainDrivenDesign.BuildingBlocks.Blocks;
+using Locations;
+using Prices;
+using Stops;
 
 public sealed class Ride : Entity
 {
@@ -20,15 +20,18 @@ public sealed class Ride : Entity
         Price = Money.From(Currency.Usd, RideCost);
     }
 
-    internal static Ride Begin(Location pickupPoint, Location destinationPoint) => new(pickupPoint, destinationPoint);
+    private LinkedList<Stop> Stops { get; }
+    internal RideId Id { get; }
+    internal Money Price { get; }
+
+    internal static Ride Begin(Location pickupPoint, Location destinationPoint)
+    {
+        return new(pickupPoint, destinationPoint);
+    }
 
     internal void AddStop(Location location)
     {
         var stop = Stop.Create(location);
         Stops.AddBefore(Stops.Last!, stop);
     }
-
-    private LinkedList<Stop> Stops { get; }
-    internal RideId Id { get; private set; }
-    internal Money Price { get; private set; }
 }

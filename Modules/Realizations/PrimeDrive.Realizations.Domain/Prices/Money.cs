@@ -8,29 +8,47 @@ public sealed class Money : ValueObject
     private const int ZeroValue = 0;
     private const decimal HalfPriceDiscount = 0.5m;
 
-    private string Currency { get; }
-    private decimal Value { get; }
-
     private Money(string currency, decimal value)
     {
-        if (Value < ZeroValue)
-        {
-            throw new PriceCannotBeNegativeException();
-        }
+        if (Value < ZeroValue) throw new PriceCannotBeNegativeException();
 
         Currency = currency;
         Value = value;
     }
 
-    public static Money operator /(Money? left, int? right) => new(left.Currency, left.Value / right.Value);
-    public static Money operator +(Money? left, Money? right) => new(left.Currency, left.Value + right.Value);
-    public static Money operator -(Money? left, Money? right) => new(left.Currency, left.Value - right.Value);
+    private string Currency { get; }
+    private decimal Value { get; }
 
-    internal static Money Zero(string currency) => new(currency, ZeroValue);
+    public static Money operator /(Money? left, int? right)
+    {
+        return new(left.Currency, left.Value / right.Value);
+    }
+    public static Money operator +(Money? left, Money? right)
+    {
+        return new(left.Currency, left.Value + right.Value);
+    }
+    public static Money operator -(Money? left, Money? right)
+    {
+        return new(left.Currency, left.Value - right.Value);
+    }
 
-    internal static Money From(string currency, decimal value) => new(currency, value);
-    
-    internal Money WithHalfDiscount() => WithPercentageDiscount(HalfPriceDiscount);
+    internal static Money Zero(string currency)
+    {
+        return new(currency, ZeroValue);
+    }
 
-    private Money WithPercentageDiscount(decimal discount) => new(Currency, Value * discount);
+    internal static Money From(string currency, decimal value)
+    {
+        return new(currency, value);
+    }
+
+    internal Money WithHalfDiscount()
+    {
+        return WithPercentageDiscount(HalfPriceDiscount);
+    }
+
+    private Money WithPercentageDiscount(decimal discount)
+    {
+        return new(Currency, Value * discount);
+    }
 }
