@@ -17,7 +17,7 @@ public sealed class Money : ValueObject
     }
 
     private string Currency { get; }
-    private decimal Value { get; }
+    internal decimal Value { get; }
 
     public static Money operator /(Money? left, int? right)
     {
@@ -42,13 +42,9 @@ public sealed class Money : ValueObject
         return new(currency, value);
     }
 
-    internal Money WithHalfDiscount()
-    {
-        return WithPercentageDiscount(HalfPriceDiscount);
-    }
+    internal Money WithHalfDiscount() =>
+        WithPercentageDiscount(HalfPriceDiscount);
 
-    private Money WithPercentageDiscount(decimal discount)
-    {
-        return new(Currency, Value * discount);
-    }
+    internal Money WithPercentageDiscount(decimal discount) =>
+        new(Currency, Value * discount);
 }

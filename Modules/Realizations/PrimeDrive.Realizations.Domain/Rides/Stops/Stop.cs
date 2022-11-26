@@ -11,8 +11,5 @@ public sealed class Stop : Entity
     }
     private Location Location { get; }
 
-    internal static Stop Create(Location location)
-    {
-        return new(location);
-    }
+    internal static Stop Create(Location location) => new(location);
 }

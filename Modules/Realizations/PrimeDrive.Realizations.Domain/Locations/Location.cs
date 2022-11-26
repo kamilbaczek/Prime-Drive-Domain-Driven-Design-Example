@@ -8,11 +8,12 @@ public sealed class Location : ValueObject
     private double _latitude = double.NaN;
     private double _longitude = double.NaN;
 
-    public Location(double latitude, double longitude)
+    private Location(double latitude, double longitude)
     {
         Latitude = latitude;
         Longitude = longitude;
     }
+    public static Location Define(double latitude, double longitude) => new(latitude, longitude);
 
     public double Latitude
     {

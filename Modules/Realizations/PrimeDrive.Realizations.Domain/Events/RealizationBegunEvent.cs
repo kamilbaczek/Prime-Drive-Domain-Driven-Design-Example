@@ -6,6 +6,26 @@ using Rides;
 
 public record RealizationBegunEvent(
     RealizationId RealizationId,
+    ServiceRequestId ServiceRequestId,
     RideId RideId,
+    DriverId DriverId,
     Location PickupPoint,
-    Location DestinationPoint) : DomainEventBase;
+    Location DestinationPoint) : DomainEventBase
+{
+    internal static RealizationBegunEvent Create(
+        RealizationId realizationId,
+        ServiceRequestId serviceRequestId,
+        RideId rideId,
+        DriverId driverId,
+        Location pickupPoint,
+        Location destinationPoint)
+    {
+        return new(
+            realizationId,
+            serviceRequestId,
+            rideId,
+            driverId,
+            pickupPoint,
+            destinationPoint);
+    }
+}

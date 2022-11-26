@@ -7,57 +7,53 @@ using Prices;
 using Rides;
 using Rides.Events;
 using Rides.Extensions;
+using Rides.Stops;
 
 public sealed class Realization : Entity, IAggregateRoot
 {
-    private string State = "";
-
     private Realization(
+        ServiceRequestId serviceId,
+        DriverId driver,
         Location pickupPoint,
         Location destinationPoint)
     {
-        Rides = ImmutableList<Ride>.Empty;
-
+        DriverId = driver;
+        ServiceId = serviceId;
+        Rides = new List<Ride>();
+        Status = RealizationStatus.InProgress;
         var initialRide = Ride.Begin(pickupPoint, destinationPoint);
         Rides.Add(initialRide);
 
-        var @event = new RealizationBegunEvent(Id, initialRide.Id, pickupPoint, destinationPoint);
+        var @event = RealizationBegunEvent.Create(
+            Id,
+            ServiceId,
+            initialRide.Id,
+            DriverId,
+            pickupPoint,
+            destinationPoint);
         AddDomainEvent(@event);
     }
+
     public RealizationId Id { get; private set; }
-    public ServiceRequestId ServiceId { get; private set; }
+    private ServiceRequestId ServiceId { get; set; }
+    private RealizationStatus Status { get; set; }
 
-    public Money Price => CalculateRidesPrice();
-
+    private Money Price => DiscountCalculator.CalculateRidesPrice(Rides);
     private DriverId DriverId { get; set; }
     private IList<Ride> Rides { get; }
-    private Money CalculateRidesPrice()
-    {
-        var finalPrice = Money.Zero(Currency.Usd);
-        for (var rideNumber = 1; rideNumber <= Rides.Count; rideNumber++)
-        {
-            if (rideNumber > 1)
-            {
-                finalPrice += Rides[rideNumber]
-                    .Price
-                    .WithHalfDiscount();
-                continue;
-            }
-
-            finalPrice += Rides[rideNumber].Price;
-        }
-
-        return finalPrice;
-    }
 
     public static Realization Begin(
+        ServiceRequestId serviceId,
+        DriverId driver,
         Location pickupPoint,
         Location destinationPoint) =>
-        new(pickupPoint, destinationPoint);
+        new(serviceId, driver, pickupPoint, destinationPoint);
 
     public void AddStopPoint(RideId rideId, Location location)
     {
         var currentRide = Rides.Get(rideId);
+        var policy = new AdditionalStopsPerRideLimitPolicy(currentRide.AdditionalStopsCount);
+        policy.Guard();
 
         currentRide.AddStop(location);
 
@@ -67,12 +63,14 @@ public sealed class Realization : Entity, IAggregateRoot
 
     public void Cancel()
     {
+        Status = RealizationStatus.Canceled;
         var @event = new RealizationCancelledEvent(Id);
         AddDomainEvent(@event);
     }
 
     public void Complete()
     {
+        Status = RealizationStatus.Completed;
         var @event = new RealizationFinishedEvent(Id, Price);
         AddDomainEvent(@event);
     }

@@ -1,7 +1,5 @@
 ﻿namespace PrimeDrive.DomainDrivenDesign.BuildingBlocks.Blocks;
 
-using System.Collections.Generic;
-
 public abstract class Entity
 {
     private List<IDomainEvent>? _domainEvents;

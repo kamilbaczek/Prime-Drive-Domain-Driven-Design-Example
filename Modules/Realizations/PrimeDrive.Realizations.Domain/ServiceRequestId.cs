@@ -1,3 +1,3 @@
 namespace PrimeDrive.Realizations.Domain;
 
-public record struct ServiceRequestId(Guid Value);
+public readonly record struct ServiceRequestId(Guid Value);
