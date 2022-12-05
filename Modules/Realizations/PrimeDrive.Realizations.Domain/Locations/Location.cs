@@ -3,6 +3,7 @@ namespace PrimeDrive.Realizations.Domain.Locations;
 using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Exceptions;
 
+[ExcludeFromCodeCoverage]
 public sealed class Location : ValueObject
 {
     private double _latitude = double.NaN;

@@ -1,6 +1,7 @@
 namespace PrimeDrive.Realizations.Domain.Rides;
 
 using DomainDrivenDesign.BuildingBlocks.Blocks;
+using Exceptions;
 using Locations;
 using Prices;
 using Stops;
@@ -18,25 +19,16 @@ public sealed class Ride : Entity
         PickupPoint = pickupStop;
         DestinationPoint = destinationStop;
         Price = Money.From(Currency.Usd, RideCost);
+        RideStatus = RideStatus.InProgress;
     }
 
     private Stop PickupPoint { get; }
     private Stop DestinationPoint { get; }
 
     private LinkedList<Stop> AdditionalStops { get; }
+    private RideStatus RideStatus { get; set; }
     internal int AdditionalStopsCount => AdditionalStops.Count;
-
-    private List<Stop> Stops()
-    {
-        var stops = new List<Stop>
-        {
-            PickupPoint
-        };
-        stops.AddRange(AdditionalStops);
-        stops.Add(DestinationPoint);
-
-        return stops;
-    }
+    internal bool IsInprogress => RideStatus == RideStatus.InProgress;
 
     internal RideId Id { get; }
     internal Money Price { get; }
@@ -48,5 +40,19 @@ public sealed class Ride : Entity
     {
         var stop = Stop.Create(location);
         AdditionalStops.AddFirst(stop);
+    }
+
+    internal void Finish(Location carLocation)
+    {
+        var destinationStop = DestinationPoint.Location;
+        if (carLocation != destinationStop)
+            throw new CarIsNotOnDestinationPointException(carLocation, destinationStop);
+
+        RideStatus = RideStatus.Finished;
+    }
+
+    internal void Cancel()
+    {
+        RideStatus = RideStatus.Canceled;
     }
 }

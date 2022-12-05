@@ -10,18 +10,41 @@ internal sealed class RideBuilder
     public RideBuilder(Realization realization) =>
         _realization = realization;
 
-    public RideBuilder WithStops(int stopsNumber)
+    public RideBuilder WithStops(int stopsNumber = 3)
     {
-        var realizationBegunEvent = _realization.DomainEvents.GetEvent<RealizationBegunEvent>();
         for (var stopNumber = 0; stopNumber <= stopsNumber; stopNumber++)
         {
             var additionalStopLocation = LocationRandomizer.GetRandom();
-            _realization.AddStopPoint(realizationBegunEvent!.RideId, additionalStopLocation);
+            _realization.AddStopPoint(additionalStopLocation);
+        }
+
+        return this;
+    }
+    
+    public RideBuilder WithManyFinished(int ridesToGenerate = 3)
+    {
+        var realizationBegunEvent = _realization.DomainEvents.GetEvent<RealizationBegunEvent>();
+        _realization.FinishRide(realizationBegunEvent.DestinationPoint);
+        
+        for (var ride = 0; ride < ridesToGenerate - 1; ride++)
+        {
+            var stopLocation = LocationRandomizer.GetRandom();
+            var destinationPoint = LocationRandomizer.GetRandom();
+            _realization.StartNewRide(stopLocation, destinationPoint);
+            _realization.FinishRide(destinationPoint);
         }
 
         return this;
     }
 
+    public RideFinishedBuilder WithFinished()
+    {
+        var realizationBegunEvent = _realization.DomainEvents.GetEvent<RealizationBegunEvent>();
+        _realization.FinishRide(realizationBegunEvent.DestinationPoint);
+
+        return new RideFinishedBuilder(_realization);
+    }
+    
     private static Realization Build() => _realization;
 
     public static implicit operator Realization(RideBuilder _) =>

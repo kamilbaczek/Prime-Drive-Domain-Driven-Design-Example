@@ -2,14 +2,14 @@ namespace PrimeDrive.Realizations.Domain.Prices;
 
 using Rides;
 
-internal static class DiscountCalculator
+internal static class RideCalculator
 {
-    internal static Money CalculateRidesPrice(IList<Ride> rides)
+    internal static Money Calculate(this IList<Ride> rides)
     {
         var finalPrice = Money.Zero(Currency.Usd);
-        for (var rideNumber = 1; rideNumber <= rides.Count; rideNumber++)
+        for (var rideNumber = 0; rideNumber < rides.Count; rideNumber++)
         {
-            if (rideNumber > 2)
+            if (rideNumber > 0)
             {
                 finalPrice += rides[rideNumber]
                     .Price

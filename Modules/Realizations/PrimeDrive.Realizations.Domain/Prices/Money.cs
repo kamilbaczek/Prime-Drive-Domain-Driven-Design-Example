@@ -17,7 +17,7 @@ public sealed class Money : ValueObject
     }
 
     private string Currency { get; }
-    internal decimal Value { get; }
+    public decimal Value { get; }
 
     public static Money operator /(Money? left, int? right)
     {
@@ -37,7 +37,7 @@ public sealed class Money : ValueObject
         return new(currency, ZeroValue);
     }
 
-    internal static Money From(string currency, decimal value)
+    public static Money From(string currency, decimal value)
     {
         return new(currency, value);
     }

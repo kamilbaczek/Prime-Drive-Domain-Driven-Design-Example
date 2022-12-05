@@ -18,6 +18,7 @@ internal sealed class RealizationBegunEventAssertions :
     public AndConstraint<RealizationBegunEventAssertions> Be(ServiceRequestId serviceRequestId, DriverId driverId, Location destinationPoint, Location pickupPoint, string because = "",
         params object[] becauseArgs)
     {
+        Subject.RealizationId.Should().NotBeNull();
         Subject.DestinationPoint.Should().Be(destinationPoint);
         Subject.PickupPoint.Should().Be(pickupPoint);
         Subject.RealizationId.Should().NotBeNull();

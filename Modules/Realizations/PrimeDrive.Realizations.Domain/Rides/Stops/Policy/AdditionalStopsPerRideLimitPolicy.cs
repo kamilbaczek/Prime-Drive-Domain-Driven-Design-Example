@@ -1,4 +1,4 @@
-namespace PrimeDrive.Realizations.Domain.Rides.Stops;
+namespace PrimeDrive.Realizations.Domain.Rides.Stops.Policy;
 
 internal sealed class AdditionalStopsPerRideLimitPolicy
 {
@@ -10,7 +10,7 @@ internal sealed class AdditionalStopsPerRideLimitPolicy
     }
 
 
-    public void Guard()
+    public void Validate()
     {
         if (_additionalStopsCount > Limit)
         {

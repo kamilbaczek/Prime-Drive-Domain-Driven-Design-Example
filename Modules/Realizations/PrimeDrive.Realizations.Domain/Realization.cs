@@ -2,12 +2,13 @@
 
 using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Events;
+using Exceptions;
 using Locations;
 using Prices;
 using Rides;
 using Rides.Events;
 using Rides.Extensions;
-using Rides.Stops;
+using Rides.Stops.Policy;
 
 public sealed class Realization : Entity, IAggregateRoot
 {
@@ -17,6 +18,7 @@ public sealed class Realization : Entity, IAggregateRoot
         Location pickupPoint,
         Location destinationPoint)
     {
+        Id = RealizationId.New();
         DriverId = driver;
         ServiceId = serviceId;
         Rides = new List<Ride>();
@@ -38,7 +40,7 @@ public sealed class Realization : Entity, IAggregateRoot
     private ServiceRequestId ServiceId { get; set; }
     private RealizationStatus Status { get; set; }
 
-    private Money Price => DiscountCalculator.CalculateRidesPrice(Rides);
+    private Money Price => Rides.Calculate();
     private DriverId DriverId { get; set; }
     private IList<Ride> Rides { get; }
 
@@ -49,29 +51,68 @@ public sealed class Realization : Entity, IAggregateRoot
         Location destinationPoint) =>
         new(serviceId, driver, pickupPoint, destinationPoint);
 
-    public void AddStopPoint(RideId rideId, Location location)
+    public void AddStopPoint(Location location)
     {
-        var currentRide = Rides.Get(rideId);
-        var policy = new AdditionalStopsPerRideLimitPolicy(currentRide.AdditionalStopsCount);
-        policy.Guard();
+        if (!RealizationInProgress)
+            throw new RealizationAlreadyCompletedException(Status);
 
-        currentRide.AddStop(location);
+        var ride = Rides.GetInprogress();
+        var policy = new AdditionalStopsPerRideLimitPolicy(ride.AdditionalStopsCount);
+        policy.Validate();
 
-        var @event = new StopPointAddedEvent(rideId, location);
+        ride.AddStop(location);
+
+        var @event = new StopPointAddedEvent(ride.Id, location);
         AddDomainEvent(@event);
     }
 
+    public void FinishRide(Location carLocation)
+    {
+        if (!RealizationInProgress)
+            throw new RealizationAlreadyCompletedException(Status);
+        var ride = Rides.GetInprogress();
+
+        ride.Finish(carLocation);
+        var @event = new RideFinishedEvent(Id, ride.Id);
+        AddDomainEvent(@event);
+    }
+
+    public void StartNewRide(Location startPoint,
+        Location destinationPoint)
+    {
+        if (!RealizationInProgress)
+            throw new RealizationAlreadyCompletedException(Status);
+
+        var ride = Rides.GetInprogress();
+        if (ride is not null)
+            throw new RideIsInprogressException();
+
+        var newRide = Ride.Begin(startPoint, destinationPoint);
+        Rides.Add(newRide);
+        AddDomainEvent(new NewRideBegunEvent(Id, newRide.Id));
+    }
+    private bool RealizationInProgress => Status == RealizationStatus.InProgress;
+
     public void Cancel()
     {
+        if (!RealizationInProgress)
+            throw new RideIsInprogressException();
+        
         Status = RealizationStatus.Canceled;
+        var ride = Rides.GetInprogress();
+        ride.Cancel();
         var @event = new RealizationCancelledEvent(Id);
         AddDomainEvent(@event);
     }
 
     public void Complete()
     {
+        var ride = Rides.GetInprogress();
+        if (ride is not null)
+            throw new RideIsInprogressException();
+
         Status = RealizationStatus.Completed;
-        var @event = new RealizationFinishedEvent(Id, Price);
+        var @event = new RealizationCompletedEvent(Id, Price);
         AddDomainEvent(@event);
     }
 }

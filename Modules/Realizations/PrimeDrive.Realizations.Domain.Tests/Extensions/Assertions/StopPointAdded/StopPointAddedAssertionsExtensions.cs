@@ -1,6 +1,6 @@
 namespace PrimeDrive.Realizations.Domain.Tests.Extensions.Assertions.StopPointAdded;
 
-using PrimeDrive.Realizations.Domain.Rides.Events;
+using Rides.Events;
 
 internal static class StopPointAddedAssertionsExtensions
 {
