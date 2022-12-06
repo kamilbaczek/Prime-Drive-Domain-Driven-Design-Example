@@ -8,9 +8,11 @@ internal sealed class ManyRidesBuilder
     private static Realization? _realization;
     private const int InitialRide = 1;
 
-    public ManyRidesBuilder(Realization? realization) =>
+    public ManyRidesBuilder(Realization? realization)
+    {
         _realization = realization;
-    
+    }
+
     public ManyRidesBuilder WithManyFinished(int ridesToGenerate = 3)
     {
         var realizationBegunEvent = _realization!.DomainEvents.GetEvent<RealizationBegunEvent>();
@@ -27,8 +29,13 @@ internal sealed class ManyRidesBuilder
         return this;
     }
 
-    private static Realization? Build() => _realization;
+    private static Realization? Build()
+    {
+        return _realization;
+    }
 
-    public static implicit operator Realization?(ManyRidesBuilder _) =>
-        Build();
+    public static implicit operator Realization?(ManyRidesBuilder _)
+    {
+        return Build();
+    }
 }

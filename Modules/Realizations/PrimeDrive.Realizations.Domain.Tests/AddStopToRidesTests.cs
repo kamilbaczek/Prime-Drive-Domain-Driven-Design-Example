@@ -43,9 +43,9 @@ public class AddStopToRidesTests
     {
         Realization realization = A
             .Realization()
-                .WithRide()
-                .WithStops()
-                .WithFinished()
+            .WithRide()
+            .WithStops()
+            .WithFinished()
             .WithCompleted();
         var additionalStopLocation = LocationRandomizer.GetRandom();
 

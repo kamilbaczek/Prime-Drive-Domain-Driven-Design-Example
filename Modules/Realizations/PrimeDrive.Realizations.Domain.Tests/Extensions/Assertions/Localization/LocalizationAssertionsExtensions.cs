@@ -4,5 +4,8 @@ using Locations;
 
 internal static class LocalizationAssertionsExtensions
 {
-    internal static LocalizationAssertions Should(this Location instance) => new(instance);
+    internal static LocalizationAssertions Should(this Location instance)
+    {
+        return new(instance);
+    }
 }

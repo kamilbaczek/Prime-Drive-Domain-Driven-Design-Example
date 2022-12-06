@@ -4,6 +4,8 @@ using DomainDrivenDesign.BuildingBlocks.Blocks;
 
 internal static class DomainEventExtension
 {
-    internal static TEvent? GetEvent<TEvent>(this IReadOnlyCollection<IDomainEvent> events) where TEvent : IDomainEvent =>
-        events.OfType<TEvent>().FirstOrDefault();
+    internal static TEvent? GetEvent<TEvent>(this IReadOnlyCollection<IDomainEvent> events) where TEvent : IDomainEvent
+    {
+        return events.OfType<TEvent>().FirstOrDefault();
+    }
 }

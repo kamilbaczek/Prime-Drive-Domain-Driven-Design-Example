@@ -57,7 +57,7 @@ public sealed class Realization : Entity, IAggregateRoot
             throw new RealizationAlreadyCompletedException(Status);
 
         var ride = Rides.GetInprogress();
-        var policy = new AdditionalStopsPerRideLimitPolicy(ride.AdditionalStopsCount);
+        var policy = new AdditionalStopsPerRideLimitPolicy(ride!.AdditionalStopsCount);
         policy.Validate();
 
         ride.AddStop(location);
@@ -72,8 +72,8 @@ public sealed class Realization : Entity, IAggregateRoot
             throw new RealizationAlreadyCompletedException(Status);
         var ride = Rides.GetInprogress();
 
-        ride.Finish(carLocation);
-        
+        ride!.Finish(carLocation);
+
         var @event = new RideFinishedEvent(Id, ride.Id);
         AddDomainEvent(@event);
     }
@@ -96,7 +96,7 @@ public sealed class Realization : Entity, IAggregateRoot
     private bool RealizationInProgress => Status == RealizationStatus.InProgress;
 
     public void Cancel()
-    {     
+    {
         if (!RealizationInProgress)
             throw new RealizationAlreadyCompletedException(Status);
 

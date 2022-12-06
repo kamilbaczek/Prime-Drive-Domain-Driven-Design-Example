@@ -4,5 +4,8 @@ using Events;
 
 internal static class RideFinishedAssertionsExtensions
 {
-    internal static RideFinishedEventAssertions Should(this RideFinishedEvent instance) => new(instance);
+    internal static RideFinishedEventAssertions Should(this RideFinishedEvent instance)
+    {
+        return new(instance);
+    }
 }

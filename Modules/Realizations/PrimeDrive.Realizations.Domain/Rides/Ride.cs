@@ -33,7 +33,7 @@ public sealed class Ride : Entity
     internal RideId Id { get; }
     internal Money Price { get; }
 
-    internal static Ride Begin(Location pickupPoint, Location destinationPoint) =>
+    internal static Ride Begin(Location pickupPoint, Location destinationPoint) => 
         new(pickupPoint, destinationPoint);
 
     internal void AddStop(Location location)
@@ -51,8 +51,6 @@ public sealed class Ride : Entity
         RideStatus = RideStatus.Finished;
     }
 
-    internal void Cancel()
-    {
+    internal void Cancel() => 
         RideStatus = RideStatus.Canceled;
-    }
 }

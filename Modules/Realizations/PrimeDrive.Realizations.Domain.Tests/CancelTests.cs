@@ -15,11 +15,11 @@ public class CancelTests
             .WithRide();
 
         realization.Cancel();
-        
+
         var realizationCancelledEvent = realization.DomainEvents.GetEvent<RealizationCancelledEvent>();
         realizationCancelledEvent!.RealizationId.Should().Be(realization.Id);
     }
-    
+
     [Test]
     public void Given_Cancel_When_RealizationIsNotInProgress_Then_ThrowsException()
     {
@@ -27,7 +27,7 @@ public class CancelTests
             .Realization()
             .WithRide();
         realization.Cancel();
-        
+
         var action = () => realization.Cancel();
 
         action.Should().ThrowExactly<RealizationAlreadyCompletedException>();

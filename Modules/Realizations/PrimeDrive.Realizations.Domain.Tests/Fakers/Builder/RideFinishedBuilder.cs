@@ -4,8 +4,10 @@ internal sealed class RideFinishedBuilder
 {
     private static Realization _realization;
 
-    public RideFinishedBuilder(Realization realization) =>
+    public RideFinishedBuilder(Realization realization)
+    {
         _realization = realization;
+    }
 
     public RideFinishedBuilder WithCompleted()
     {
@@ -14,8 +16,13 @@ internal sealed class RideFinishedBuilder
         return this;
     }
 
-    private static Realization Build() => _realization;
+    private static Realization Build()
+    {
+        return _realization;
+    }
 
-    public static implicit operator Realization(RideFinishedBuilder _) =>
-        Build();
+    public static implicit operator Realization(RideFinishedBuilder _)
+    {
+        return Build();
+    }
 }

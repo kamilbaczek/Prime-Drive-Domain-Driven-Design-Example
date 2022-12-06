@@ -16,10 +16,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
     {
         if (Equals(obj1, null))
         {
-            if (Equals(obj2, null))
-            {
-                return true;
-            }
+            if (Equals(obj2, null)) return true;
 
             return false;
         }
@@ -34,10 +31,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public override bool Equals(object obj)
     {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
+        if (obj == null || GetType() != obj.GetType()) return false;
 
         return GetProperties().All(p => PropertiesAreEqual(obj, p))
                && GetFields().All(f => FieldsAreEqual(obj, f));
@@ -78,11 +72,9 @@ public abstract class ValueObject : IEquatable<ValueObject>
     private IEnumerable<PropertyInfo> GetProperties()
     {
         if (_properties == null)
-        {
             _properties = GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .ToList();
-        }
 
         return _properties;
     }
@@ -90,10 +82,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
     private IEnumerable<FieldInfo> GetFields()
     {
         if (_fields == null)
-        {
             _fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .ToList();
-        }
 
         return _fields;
     }
@@ -102,6 +92,6 @@ public abstract class ValueObject : IEquatable<ValueObject>
     {
         var currentHash = value?.GetHashCode() ?? 0;
 
-        return (seed * 23) + currentHash;
+        return seed * 23 + currentHash;
     }
 }

@@ -7,8 +7,10 @@ internal sealed class RideBuilder
 {
     private static Realization _realization;
 
-    public RideBuilder(Realization realization) =>
+    public RideBuilder(Realization realization)
+    {
         _realization = realization;
+    }
 
     public RideBuilder WithStops(int stopsNumber = 3)
     {
@@ -28,9 +30,14 @@ internal sealed class RideBuilder
 
         return new RideFinishedBuilder(_realization);
     }
-    
-    private static Realization Build() => _realization;
 
-    public static implicit operator Realization(RideBuilder _) =>
-        Build();
+    private static Realization Build()
+    {
+        return _realization;
+    }
+
+    public static implicit operator Realization(RideBuilder _)
+    {
+        return Build();
+    }
 }

@@ -22,7 +22,7 @@ public class BeginNewRideTests
         var newRideBegunEvent = realization.DomainEvents.GetEvent<NewRideBegunEvent>();
         newRideBegunEvent.Should().NotBeNull();
     }
-    
+
     [Test]
     public void Given_BeginNewRide_When_RideIsAlreadyInprogress_Then_CannotBeginNewRide()
     {
@@ -35,7 +35,7 @@ public class BeginNewRideTests
 
         action.Should().ThrowExactly<RideIsInprogressException>();
     }
-    
+
     [Test]
     public void Given_BeginNewRide_When_RealizationIsCompleted_Then_CannotBeginNewRide()
     {

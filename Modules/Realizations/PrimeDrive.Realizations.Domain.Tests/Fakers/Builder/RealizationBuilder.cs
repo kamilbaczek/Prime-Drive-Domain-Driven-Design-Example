@@ -17,15 +17,23 @@ internal sealed class RealizationBuilder
         _serviceRequestId = ServiceRequestRandomizer.GetRandom();
     }
 
-    private static Realization Build() =>
-        Realization.Begin(_serviceRequestId, _driver, _pickupPoint, _destinationPoint);
+    private static Realization Build()
+    {
+        return Realization.Begin(_serviceRequestId, _driver, _pickupPoint, _destinationPoint);
+    }
 
-    internal RideBuilder WithRide() =>
-        new(Build());
+    internal RideBuilder WithRide()
+    {
+        return new(Build());
+    }
 
-    internal ManyRidesBuilder WithManyRides() =>
-        new(Build());
-    
-    public static implicit operator Realization(RealizationBuilder _) =>
-        Build();
+    internal ManyRidesBuilder WithManyRides()
+    {
+        return new(Build());
+    }
+
+    public static implicit operator Realization(RealizationBuilder _)
+    {
+        return Build();
+    }
 }

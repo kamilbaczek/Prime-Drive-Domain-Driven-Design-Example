@@ -20,7 +20,7 @@ public record RealizationBegunEvent(
         Location pickupPoint,
         Location destinationPoint)
     {
-        return new(
+        return new RealizationBegunEvent(
             realizationId,
             serviceRequestId,
             rideId,

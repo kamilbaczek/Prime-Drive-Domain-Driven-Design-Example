@@ -30,8 +30,8 @@ public class FinishRideTests
     {
         Realization realization = A
             .Realization()
-                .WithRide()
-                .WithFinished()
+            .WithRide()
+            .WithFinished()
             .WithCompleted();
         var realizationBegunEvent = realization.DomainEvents.GetEvent<RealizationBegunEvent>();
 
@@ -47,7 +47,7 @@ public class FinishRideTests
             .Realization()
             .WithRide();
         var location = LocationRandomizer.GetRandom();
-        
+
         var action = () => realization.FinishRide(location);
 
         action.Should().ThrowExactly<CarIsNotOnDestinationPointException>();

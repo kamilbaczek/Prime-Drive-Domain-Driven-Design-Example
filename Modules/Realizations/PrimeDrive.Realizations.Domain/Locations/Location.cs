@@ -14,7 +14,10 @@ public sealed class Location : ValueObject
         Latitude = latitude;
         Longitude = longitude;
     }
-    public static Location Define(double latitude, double longitude) => new(latitude, longitude);
+    public static Location Define(double latitude, double longitude)
+    {
+        return new(latitude, longitude);
+    }
 
     public double Latitude
     {
