@@ -21,10 +21,10 @@ public class AddStopToRidesTests
         realization.AddStopPoint(additionalStopLocation);
 
         var stopPointAddedEvent = realization.DomainEvents.GetEvent<StopPointAddedEvent>();
-        stopPointAddedEvent!.Should().Be(realizationBegunEvent.RideId, additionalStopLocation);
+        stopPointAddedEvent!.Should().Be(realizationBegunEvent!.RideId, additionalStopLocation);
     }
 
-    [TestCase(10)]
+    [TestCase(3)]
     public void Given_AddStop_When_AdditionalStopsLimitWasExceeded_Then_AdditionalStopsExceedException(int stopsLimit)
     {
         Realization realization = A
@@ -44,8 +44,8 @@ public class AddStopToRidesTests
         Realization realization = A
             .Realization()
             .WithRide()
-            .WithStops()
-            .WithFinished()
+                .WithStops()
+                .WithFinished()
             .WithCompleted();
         var additionalStopLocation = LocationRandomizer.GetRandom();
 

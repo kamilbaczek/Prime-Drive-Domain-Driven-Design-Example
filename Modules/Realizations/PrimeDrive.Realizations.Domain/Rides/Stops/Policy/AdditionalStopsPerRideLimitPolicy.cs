@@ -3,7 +3,7 @@ namespace PrimeDrive.Realizations.Domain.Rides.Stops.Policy;
 internal sealed class AdditionalStopsPerRideLimitPolicy
 {
     private readonly int _additionalStopsCount;
-    private const int Limit = 2;
+    private const int Limit = 3;
 
     public AdditionalStopsPerRideLimitPolicy(int additionalStopsCount)
     {
