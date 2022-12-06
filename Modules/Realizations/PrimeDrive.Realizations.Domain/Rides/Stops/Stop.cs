@@ -1,6 +1,5 @@
 namespace PrimeDrive.Realizations.Domain.Rides.Stops;
 
-using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Locations;
 
 public sealed class Stop : Entity

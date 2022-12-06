@@ -1,6 +1,5 @@
 ﻿namespace PrimeDrive.Realizations.Domain;
 
-using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Events;
 using Exceptions;
 using Locations;

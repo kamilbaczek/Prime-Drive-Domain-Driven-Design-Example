@@ -1,6 +1,5 @@
 namespace PrimeDrive.Realizations.Domain.Rides;
 
-using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Exceptions;
 using Locations;
 using Prices;

@@ -1,6 +1,5 @@
 namespace PrimeDrive.Realizations.Domain.Locations;
 
-using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Exceptions;
 
 [ExcludeFromCodeCoverage]
