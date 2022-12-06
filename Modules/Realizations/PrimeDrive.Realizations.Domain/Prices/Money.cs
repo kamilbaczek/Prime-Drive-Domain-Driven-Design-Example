@@ -3,6 +3,7 @@ namespace PrimeDrive.Realizations.Domain.Prices;
 using DomainDrivenDesign.BuildingBlocks.Blocks;
 using Exceptions;
 
+[ExcludeFromCodeCoverage]
 public sealed class Money : ValueObject
 {
     private const int ZeroValue = 0;

@@ -17,7 +17,7 @@ public class CancelTests
         realization.Cancel();
         
         var realizationCancelledEvent = realization.DomainEvents.GetEvent<RealizationCancelledEvent>();
-        realizationCancelledEvent.RealizationId.Should().Be(realization.Id);
+        realizationCancelledEvent!.RealizationId.Should().Be(realization.Id);
     }
     
     [Test]

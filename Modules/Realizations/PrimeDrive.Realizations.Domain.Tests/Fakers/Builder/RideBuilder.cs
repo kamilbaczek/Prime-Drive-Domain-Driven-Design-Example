@@ -20,27 +20,11 @@ internal sealed class RideBuilder
 
         return this;
     }
-    
-    public RideBuilder WithManyFinished(int ridesToGenerate = 3)
-    {
-        var realizationBegunEvent = _realization.DomainEvents.GetEvent<RealizationBegunEvent>();
-        _realization.FinishRide(realizationBegunEvent.DestinationPoint);
-        
-        for (var ride = 0; ride < ridesToGenerate - 1; ride++)
-        {
-            var stopLocation = LocationRandomizer.GetRandom();
-            var destinationPoint = LocationRandomizer.GetRandom();
-            _realization.StartNewRide(stopLocation, destinationPoint);
-            _realization.FinishRide(destinationPoint);
-        }
-
-        return this;
-    }
 
     public RideFinishedBuilder WithFinished()
     {
         var realizationBegunEvent = _realization.DomainEvents.GetEvent<RealizationBegunEvent>();
-        _realization.FinishRide(realizationBegunEvent.DestinationPoint);
+        _realization.FinishRide(realizationBegunEvent!.DestinationPoint);
 
         return new RideFinishedBuilder(_realization);
     }

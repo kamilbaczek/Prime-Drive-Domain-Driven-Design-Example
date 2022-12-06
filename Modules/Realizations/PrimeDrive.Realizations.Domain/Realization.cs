@@ -78,7 +78,7 @@ public sealed class Realization : Entity, IAggregateRoot
         AddDomainEvent(@event);
     }
 
-    public void StartNewRide(Location startPoint,
+    public void BeginNewRide(Location startPoint,
         Location destinationPoint)
     {
         if (!RealizationInProgress)
@@ -90,7 +90,8 @@ public sealed class Realization : Entity, IAggregateRoot
 
         var newRide = Ride.Begin(startPoint, destinationPoint);
         Rides.Add(newRide);
-        AddDomainEvent(new NewRideBegunEvent(Id, newRide.Id));
+        var @event = new NewRideBegunEvent(Id, newRide.Id);
+        AddDomainEvent(@event);
     }
     private bool RealizationInProgress => Status == RealizationStatus.InProgress;
 
@@ -101,7 +102,7 @@ public sealed class Realization : Entity, IAggregateRoot
 
         Status = RealizationStatus.Canceled;
         var ride = Rides.GetInprogress();
-        ride.Cancel();
+        ride!.Cancel();
         var @event = new RealizationCancelledEvent(Id);
         AddDomainEvent(@event);
     }

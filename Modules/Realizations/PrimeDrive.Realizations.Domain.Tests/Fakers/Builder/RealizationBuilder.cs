@@ -23,6 +23,9 @@ internal sealed class RealizationBuilder
     internal RideBuilder WithRide() =>
         new(Build());
 
+    internal ManyRidesBuilder WithManyRides() =>
+        new(Build());
+    
     public static implicit operator Realization(RealizationBuilder _) =>
         Build();
 }
