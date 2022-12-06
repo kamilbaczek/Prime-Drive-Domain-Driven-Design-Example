@@ -73,6 +73,7 @@ public sealed class Realization : Entity, IAggregateRoot
         var ride = Rides.GetInprogress();
 
         ride.Finish(carLocation);
+        
         var @event = new RideFinishedEvent(Id, ride.Id);
         AddDomainEvent(@event);
     }
@@ -94,10 +95,10 @@ public sealed class Realization : Entity, IAggregateRoot
     private bool RealizationInProgress => Status == RealizationStatus.InProgress;
 
     public void Cancel()
-    {
+    {     
         if (!RealizationInProgress)
-            throw new RideIsInprogressException();
-        
+            throw new RealizationAlreadyCompletedException(Status);
+
         Status = RealizationStatus.Canceled;
         var ride = Rides.GetInprogress();
         ride.Cancel();

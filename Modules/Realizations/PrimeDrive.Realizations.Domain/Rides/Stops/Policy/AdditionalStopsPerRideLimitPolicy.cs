@@ -4,6 +4,7 @@ internal sealed class AdditionalStopsPerRideLimitPolicy
 {
     private readonly int _additionalStopsCount;
     private const int Limit = 10;
+    
     public AdditionalStopsPerRideLimitPolicy(int additionalStopsCount)
     {
         _additionalStopsCount = additionalStopsCount;
