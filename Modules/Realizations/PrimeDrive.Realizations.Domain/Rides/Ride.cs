@@ -1,6 +1,5 @@
 namespace PrimeDrive.Realizations.Domain.Rides;
 
-using Exceptions;
 using Locations;
 using Prices;
 using Stops;
@@ -44,9 +43,8 @@ public sealed class Ride : Entity
     internal void Finish(Location carLocation)
     {
         var destinationStop = DestinationPoint.Location;
-        if (carLocation != destinationStop)
-            throw new CarIsNotOnDestinationPointException(carLocation, destinationStop);
-
+        // TODO: add cannot finish ride when car is not at destination point - policy
+        
         RideStatus = RideStatus.Finished;
     }
 

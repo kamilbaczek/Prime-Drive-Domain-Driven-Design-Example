@@ -1,13 +1,11 @@
 ﻿namespace PrimeDrive.Realizations.Domain;
 
 using Events;
-using Exceptions;
 using Locations;
 using Prices;
 using Rides;
 using Rides.Events;
 using Rides.Extensions;
-using Rides.Stops.Policy;
 
 public sealed class Realization : Entity, IAggregateRoot
 {
@@ -52,12 +50,10 @@ public sealed class Realization : Entity, IAggregateRoot
 
     public void AddStopPoint(Location location)
     {
-        if (!RealizationInProgress)
-            throw new RealizationAlreadyCompletedException(Status);
+        //TODO: add stop point cannot be added when there is realization already completed - policy
 
         var ride = Rides.GetInprogress();
-        var policy = new AdditionalStopsPerRideLimitPolicy(ride!.AdditionalStopsCount);
-        policy.Validate();
+        //TODO: add additional stops limit - policy
 
         ride.AddStop(location);
 
@@ -67,8 +63,7 @@ public sealed class Realization : Entity, IAggregateRoot
 
     public void FinishRide(Location carLocation)
     {
-        if (!RealizationInProgress)
-            throw new RealizationAlreadyCompletedException(Status);
+        //TODO: add cannot cancel realization when there is ride in progress already - policy
         var ride = Rides.GetInprogress();
 
         ride!.Finish(carLocation);
@@ -80,13 +75,11 @@ public sealed class Realization : Entity, IAggregateRoot
     public void BeginNewRide(Location startPoint,
         Location destinationPoint)
     {
-        if (!RealizationInProgress)
-            throw new RealizationAlreadyCompletedException(Status);
+        //TODO: add begin new ride cannot be executed when realization is already completed - policy
 
         var ride = Rides.GetInprogress();
-        if (ride is not null)
-            throw new RideIsInprogressException();
-
+        //TODO: begin new ride cannot be executed when there is ride in progress - policy
+        
         var newRide = Ride.Begin(startPoint, destinationPoint);
         Rides.Add(newRide);
         var @event = new NewRideBegunEvent(Id, newRide.Id);
@@ -96,9 +89,8 @@ public sealed class Realization : Entity, IAggregateRoot
 
     public void Cancel()
     {
-        if (!RealizationInProgress)
-            throw new RealizationAlreadyCompletedException(Status);
-
+        //TODO: add cannot cancel realization when there is ride in progress - policy
+        
         Status = RealizationStatus.Canceled;
         var ride = Rides.GetInprogress();
         ride!.Cancel();
@@ -109,9 +101,8 @@ public sealed class Realization : Entity, IAggregateRoot
     public void Complete()
     {
         var ride = Rides.GetInprogress();
-        if (ride is not null)
-            throw new RideIsInprogressException();
-
+        //TODO: add cannot complete realization when there is ride in progress - policy
+        
         Status = RealizationStatus.Completed;
         var @event = new RealizationCompletedEvent(Id, Price);
         AddDomainEvent(@event);
