@@ -43,7 +43,6 @@ public sealed class Ride : Entity
     internal void Finish(Location carLocation)
     {
         var destinationStop = DestinationPoint.Location;
-        // TODO: add cannot finish ride when car is not at destination point - policy
         
         RideStatus = RideStatus.Finished;
     }
