@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C54312
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeDrive.DomainDrivenDesign.BuildingBlocks", "PrimeDrive.DomainDrivenDesign.BuildingBlocks\PrimeDrive.DomainDrivenDesign.BuildingBlocks.csproj", "{A7DBE358-8197-4795-84E4-13DE8DEF2B56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeDrive.Realizations.Domain.Tests", "Modules\Realizations\PrimeDrive.Realizations.Domain.Tests\PrimeDrive.Realizations.Domain.Tests.csproj", "{59418588-EA27-4AD5-8236-711D28917C19}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeDrive.Demands.Domain.Tests", "Modules\Demands\PrimeDrive.Demands.Domain.Tests\PrimeDrive.Demands.Domain.Tests.csproj", "{4BDB0DCB-ED7C-4B3B-9225-FA7C00F54CD0}"
 EndProject
 Global
@@ -40,6 +42,7 @@ Global
 		{F2BBFC46-34AC-49C4-BF3F-3D48FABF0A32} = {75879F02-9852-464D-B4A8-F99979D94076}
 		{C5431202-4BB1-4522-8F22-067F99E6D107} = {D4859A01-860A-4953-9900-B532300176DC}
 		{A7DBE358-8197-4795-84E4-13DE8DEF2B56} = {C5431202-4BB1-4522-8F22-067F99E6D107}
+		{59418588-EA27-4AD5-8236-711D28917C19} = {CE6F5673-DE58-499A-A80A-A860B201C9D0}
 		{4BDB0DCB-ED7C-4B3B-9225-FA7C00F54CD0} = {DE7EBBA6-C698-4350-A141-A731B9B9C521}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -55,6 +58,10 @@ Global
 		{A7DBE358-8197-4795-84E4-13DE8DEF2B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7DBE358-8197-4795-84E4-13DE8DEF2B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7DBE358-8197-4795-84E4-13DE8DEF2B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59418588-EA27-4AD5-8236-711D28917C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59418588-EA27-4AD5-8236-711D28917C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59418588-EA27-4AD5-8236-711D28917C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59418588-EA27-4AD5-8236-711D28917C19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BDB0DCB-ED7C-4B3B-9225-FA7C00F54CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BDB0DCB-ED7C-4B3B-9225-FA7C00F54CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BDB0DCB-ED7C-4B3B-9225-FA7C00F54CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
