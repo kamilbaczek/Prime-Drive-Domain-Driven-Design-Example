@@ -1,1 +1,1 @@
-2. Zmień proste struktury danych z poprzedniego zadania na Value Objects
+2. Change the simple data structures from the previous task to Value Objects
