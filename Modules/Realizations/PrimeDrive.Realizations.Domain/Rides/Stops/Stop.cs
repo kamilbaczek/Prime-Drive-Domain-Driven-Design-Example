@@ -6,8 +6,8 @@ public sealed class Stop : Entity
 {
     private Stop(Location location)
     {
-        Location = location;
     }
+    
     internal Location Location { get; }
 
     internal static Stop Create(Location location)

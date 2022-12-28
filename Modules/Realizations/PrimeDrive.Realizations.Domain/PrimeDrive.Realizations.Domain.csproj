@@ -10,5 +10,9 @@
         <ProjectReference Include="..\..\..\PrimeDrive.DomainDrivenDesign.BuildingBlocks\PrimeDrive.DomainDrivenDesign.BuildingBlocks.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Docs\Excercises" />
+    </ItemGroup>
+
 
 </Project>
