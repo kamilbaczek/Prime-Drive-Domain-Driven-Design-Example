@@ -1,0 +1,1 @@
+4. Add domain events in TODO places
