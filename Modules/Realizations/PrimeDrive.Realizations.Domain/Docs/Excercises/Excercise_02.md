@@ -1,0 +1,1 @@
+2. Zmień proste struktury danych z poprzedniego zadania na Value Objects
