@@ -1,0 +1,1 @@
+2. Change the simple data structures from the previous task to Value Objects
