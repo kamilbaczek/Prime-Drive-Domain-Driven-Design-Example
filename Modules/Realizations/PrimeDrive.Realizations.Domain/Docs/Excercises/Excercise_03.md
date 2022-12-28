@@ -1,1 +1,1 @@
-3. Define behaviours of methods based on event storming
+3. Define behaviours of methods based on event storming.
